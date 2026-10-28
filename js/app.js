@@ -1,4 +1,4 @@
-// import { books, addBook } from "./state.js";
+import { books, loadBooks, saveBooks } from "./state.js";
 
 const bookTitle = document.getElementById("book-title");
 const bookAuthor = document.getElementById("book-author");
@@ -8,21 +8,6 @@ const bookDescription = document.getElementById("book-description");
 const bookStatus = document.getElementById("book-status");
 const addBookForm = document.getElementById("add-book-form");
 const booksList = document.getElementById("books-list");
-
-let books;
-let newBook;
-function loadBooks() {
-  if (localStorage.product != null) {
-    books = JSON.parse(localStorage.product);
-  } else {
-    books = [];
-  }
-}
-
-function saveBooks() {
-  books.push(newBook);
-  localStorage.setItem("product", JSON.stringify(books));
-}
 
 function displayBooks() {
   booksList.innerHTML = "";
@@ -56,7 +41,7 @@ function displayBooks() {
 
 addBookForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  newBook = {
+  let newBook = {
     title: bookTitle.value,
     author: bookAuthor.value,
     year: bookYear.value,
@@ -65,7 +50,7 @@ addBookForm.addEventListener("submit", (e) => {
     status: bookStatus.value,
   };
   loadBooks();
-  saveBooks();
+  saveBooks(newBook);
   displayBooks();
 });
 loadBooks();

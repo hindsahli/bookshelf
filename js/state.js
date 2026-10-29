@@ -9,6 +9,8 @@ export function loadBooks() {
 }
 
 export function saveBooks(newBook) {
-  books.push(newBook);
+  if (newBook) {
+    books.push(newBook);
+  }
   localStorage.setItem("product", JSON.stringify(books));
 }

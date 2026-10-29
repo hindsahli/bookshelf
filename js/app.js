@@ -34,9 +34,27 @@ function displayBooks(booksToDisplay = books) {
     description.textContent = newBook.description;
 
     const status = document.createElement("p");
+    // status.classList.add("mb-");
     status.textContent = `Status : ${newBook.status}`;
 
-    card.append(title, author, yearGenre, description, status);
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.classList.add(
+      "bg-red-500",
+      "text-xs",
+      "text-white",
+      "px-2",
+      "py-1",
+      "mt-6",
+      "rounded",
+    );
+
+    deleteButton.addEventListener("click", () => {
+      newBook.delete = true;
+      deleteBook();
+    });
+
+    card.append(title, author, yearGenre, description, status, deleteButton);
     booksList.appendChild(card);
   });
 }
@@ -50,6 +68,7 @@ addBookForm.addEventListener("submit", (e) => {
     genre: bookGenre.value,
     description: bookDescription.value,
     status: bookStatus.value,
+    delete: false,
   };
   loadBooks();
   saveBooks(newBook);
@@ -87,3 +106,14 @@ sortInput.addEventListener("change", (e) => {
     displayBooks(sortedBooks);
   }
 });
+
+function deleteBook() {
+  for (let i = 0; i < books.length; i++) {
+    if (books[i].delete == true) {
+      books.splice(i, 1);
+      break;
+    }
+  }
+  saveBooks();
+  displayBooks();
+}

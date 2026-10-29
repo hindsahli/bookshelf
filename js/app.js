@@ -8,10 +8,12 @@ const bookDescription = document.getElementById("book-description");
 const bookStatus = document.getElementById("book-status");
 const addBookForm = document.getElementById("add-book-form");
 const booksList = document.getElementById("books-list");
+const searchInput = document.getElementById("search-input");
+const sortInput = document.getElementById("sort-input");
 
-function displayBooks() {
+function displayBooks(booksToDisplay = books) {
   booksList.innerHTML = "";
-  books.forEach((newBook) => {
+  booksToDisplay.forEach((newBook) => {
     const card = document.createElement("div");
     card.classList.add("span-col-1", "bg-white", "rounded-lg", "border", "p-4");
 
@@ -55,3 +57,33 @@ addBookForm.addEventListener("submit", (e) => {
 });
 loadBooks();
 displayBooks();
+
+searchInput.addEventListener("input", (e) => {
+  const filteredBooks = [];
+  for (let i = 0; i < books.length; i++) {
+    if (
+      books[i].title.toLowerCase().includes(searchInput.value.toLowerCase())
+    ) {
+      filteredBooks.push(books[i]);
+    } else if (
+      books[i].author.toLowerCase().includes(searchInput.value.toLowerCase())
+    ) {
+      filteredBooks.push(books[i]);
+    }
+  }
+  displayBooks(filteredBooks);
+});
+
+sortInput.addEventListener("change", (e) => {
+  let sortedBooks = [];
+  if (sortInput.value == "title") {
+    sortedBooks = [...books].sort((a, b) => a.title.localeCompare(b.title));
+    displayBooks(sortedBooks);
+  } else if (sortInput.value == "author") {
+    sortedBooks = [...books].sort((a, b) => a.author.localeCompare(b.author));
+    displayBooks(sortedBooks);
+  } else {
+    sortedBooks = [...books].sort((a, b) => Number(a.year) - Number(b.year));
+    displayBooks(sortedBooks);
+  }
+});

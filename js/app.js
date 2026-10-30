@@ -11,6 +11,8 @@ const booksList = document.getElementById("books-list");
 const searchInput = document.getElementById("search-input");
 const sortInput = document.getElementById("sort-input");
 
+let bookToModify = null;
+
 function displayBooks(booksToDisplay = books) {
   booksList.innerHTML = "";
   booksToDisplay.forEach((newBook) => {
@@ -60,6 +62,16 @@ function displayBooks(booksToDisplay = books) {
       "mr-4",
       "rounded",
     );
+    modifyButton.addEventListener("click", () => {
+      bookToModify = newBook.id;
+
+      bookTitle.value = newBook.title;
+      bookAuthor.value = newBook.author;
+      bookYear.value = newBook.year;
+      bookGenre.value = newBook.genre;
+      bookDescription.value = newBook.description;
+      bookStatus.value = newBook.status;
+    });
     deleteButton.addEventListener("click", () => {
       newBook.delete = true;
       deleteBook();
@@ -78,20 +90,36 @@ function displayBooks(booksToDisplay = books) {
   });
 }
 
+
 addBookForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  let newBook = {
-    id: Date.now(),
-    title: bookTitle.value,
-    author: bookAuthor.value,
-    year: bookYear.value,
-    genre: bookGenre.value,
-    description: bookDescription.value,
-    status: bookStatus.value,
-    delete: false,
-  };
-  loadBooks();
-  saveBooks(newBook);
+  if (bookToModify != null) {
+    const book = books.find((book) => book.id === bookToModify);
+
+    book.title = bookTitle.value;
+    book.author = bookAuthor.value;
+    book.year = bookYear.value;
+    book.genre = bookGenre.value;
+    book.description = bookDescription.value;
+    book.status = bookStatus.value;
+
+    saveBooks();
+
+    bookToModify = null;
+  } else {
+    let newBook = {
+      id: Date.now(),
+      title: bookTitle.value,
+      author: bookAuthor.value,
+      year: bookYear.value,
+      genre: bookGenre.value,
+      description: bookDescription.value,
+      status: bookStatus.value,
+      delete: false,
+    };
+    saveBooks(newBook);
+  }
+
   displayBooks();
 });
 loadBooks();

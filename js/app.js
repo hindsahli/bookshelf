@@ -48,13 +48,32 @@ function displayBooks(booksToDisplay = books) {
       "mt-6",
       "rounded",
     );
-
+    const modifyButton = document.createElement("button");
+    modifyButton.textContent = "Modify";
+    modifyButton.classList.add(
+      "bg-green-500",
+      "text-xs",
+      "text-white",
+      "px-2",
+      "py-1",
+      "mt-6",
+      "mr-4",
+      "rounded",
+    );
     deleteButton.addEventListener("click", () => {
       newBook.delete = true;
       deleteBook();
     });
 
-    card.append(title, author, yearGenre, description, status, deleteButton);
+    card.append(
+      title,
+      author,
+      yearGenre,
+      description,
+      status,
+      modifyButton,
+      deleteButton,
+    );
     booksList.appendChild(card);
   });
 }
@@ -62,6 +81,7 @@ function displayBooks(booksToDisplay = books) {
 addBookForm.addEventListener("submit", (e) => {
   e.preventDefault();
   let newBook = {
+    id: Date.now(),
     title: bookTitle.value,
     author: bookAuthor.value,
     year: bookYear.value,
